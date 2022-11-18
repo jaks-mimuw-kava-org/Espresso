@@ -1,5 +1,6 @@
-package src.main.java.com.espresso;
+package org.kava.espresso;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,7 @@ import java.sql.*;
 
 public class EspressoStatement implements Statement {
     private final Path databasePath;
+
     public EspressoStatement(Path databasePath) {
         this.databasePath = databasePath;
     }
@@ -124,23 +126,23 @@ public class EspressoStatement implements Statement {
     }
 
     @Override
-    public void setFetchDirection(int i) throws SQLException {
-
-    }
-
-    @Override
     public int getFetchDirection() throws SQLException {
         return 0;
     }
 
     @Override
-    public void setFetchSize(int i) throws SQLException {
+    public void setFetchDirection(int i) throws SQLException {
 
     }
 
     @Override
     public int getFetchSize() throws SQLException {
         return 0;
+    }
+
+    @Override
+    public void setFetchSize(int i) throws SQLException {
+
     }
 
     @Override
@@ -224,13 +226,13 @@ public class EspressoStatement implements Statement {
     }
 
     @Override
-    public void setPoolable(boolean b) throws SQLException {
-
+    public boolean isPoolable() throws SQLException {
+        return false;
     }
 
     @Override
-    public boolean isPoolable() throws SQLException {
-        return false;
+    public void setPoolable(boolean b) throws SQLException {
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-package src.main.java.com.espresso;
+package org.kava.espresso;
 
 import java.nio.file.Path;
 import java.sql.*;
@@ -34,13 +34,13 @@ public class EspressoConnection implements Connection {
     }
 
     @Override
-    public void setAutoCommit(boolean b) throws SQLException {
-
+    public boolean getAutoCommit() throws SQLException {
+        return false;
     }
 
     @Override
-    public boolean getAutoCommit() throws SQLException {
-        return false;
+    public void setAutoCommit(boolean b) throws SQLException {
+
     }
 
     @Override
@@ -69,17 +69,12 @@ public class EspressoConnection implements Connection {
     }
 
     @Override
-    public void setReadOnly(boolean b) throws SQLException {
-
-    }
-
-    @Override
     public boolean isReadOnly() throws SQLException {
         return false;
     }
 
     @Override
-    public void setCatalog(String s) throws SQLException {
+    public void setReadOnly(boolean b) throws SQLException {
 
     }
 
@@ -89,13 +84,18 @@ public class EspressoConnection implements Connection {
     }
 
     @Override
-    public void setTransactionIsolation(int i) throws SQLException {
+    public void setCatalog(String s) throws SQLException {
 
     }
 
     @Override
     public int getTransactionIsolation() throws SQLException {
         return 0;
+    }
+
+    @Override
+    public void setTransactionIsolation(int i) throws SQLException {
+
     }
 
     @Override
@@ -134,13 +134,13 @@ public class EspressoConnection implements Connection {
     }
 
     @Override
-    public void setHoldability(int i) throws SQLException {
-
+    public int getHoldability() throws SQLException {
+        return 0;
     }
 
     @Override
-    public int getHoldability() throws SQLException {
-        return 0;
+    public void setHoldability(int i) throws SQLException {
+
     }
 
     @Override
@@ -224,11 +224,6 @@ public class EspressoConnection implements Connection {
     }
 
     @Override
-    public void setClientInfo(Properties properties) throws SQLClientInfoException {
-
-    }
-
-    @Override
     public String getClientInfo(String s) throws SQLException {
         return null;
     }
@@ -236,6 +231,11 @@ public class EspressoConnection implements Connection {
     @Override
     public Properties getClientInfo() throws SQLException {
         return null;
+    }
+
+    @Override
+    public void setClientInfo(Properties properties) throws SQLClientInfoException {
+
     }
 
     @Override
@@ -249,13 +249,13 @@ public class EspressoConnection implements Connection {
     }
 
     @Override
-    public void setSchema(String s) throws SQLException {
-
+    public String getSchema() throws SQLException {
+        return null;
     }
 
     @Override
-    public String getSchema() throws SQLException {
-        return null;
+    public void setSchema(String s) throws SQLException {
+
     }
 
     @Override

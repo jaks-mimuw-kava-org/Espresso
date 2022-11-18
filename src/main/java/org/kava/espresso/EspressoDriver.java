@@ -1,4 +1,4 @@
-package src.main.java.com.espresso;
+package org.kava.espresso;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 import java.util.regex.*;
+
 public class EspressoDriver implements Driver {
     private static final Driver registeredDriver;
     private static final Pattern URL_PATTERN = Pattern.compile("^jdbc:csv:(.*)$");
@@ -17,13 +18,14 @@ public class EspressoDriver implements Driver {
         try {
             registeredDriver = new EspressoDriver();
             DriverManager.registerDriver(registeredDriver);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new ExceptionInInitializerError(e);
         }
 
     }
-    public EspressoDriver() {}
+
+    public EspressoDriver() {
+    }
 
     private Properties parseURL(String URL) throws SQLException {
         if (URL == null) {

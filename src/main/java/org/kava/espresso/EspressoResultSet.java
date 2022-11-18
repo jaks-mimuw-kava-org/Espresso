@@ -1,4 +1,4 @@
-package src.main.java.com.espresso;
+package org.kava.espresso;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -319,23 +319,23 @@ public class EspressoResultSet implements ResultSet {
     }
 
     @Override
-    public void setFetchDirection(int i) throws SQLException {
-
-    }
-
-    @Override
     public int getFetchDirection() throws SQLException {
         return 0;
     }
 
     @Override
-    public void setFetchSize(int i) throws SQLException {
+    public void setFetchDirection(int i) throws SQLException {
 
     }
 
     @Override
     public int getFetchSize() throws SQLException {
         return 0;
+    }
+
+    @Override
+    public void setFetchSize(int i) throws SQLException {
+
     }
 
     @Override
