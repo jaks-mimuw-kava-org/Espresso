@@ -1,6 +1,6 @@
-package src.main.java.com.example;
+package com.example;
 
-import src.main.java.com.espresso.EspressoDriver;
+import com.espresso.EspressoDriver;
 
 import java.sql.*;
 
@@ -9,7 +9,7 @@ public class Example {
     public static void main(String[] args) {
         Driver driver = new EspressoDriver();
         try {
-            Connection con = driver.connect("jdbc:csv:/home/karol/IdeaProjects/Espresso/databases/", null);
+            Connection con = driver.connect("jdbc:csv:databases", null);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM simple_database.csv;");
             while (rs.next()) {

@@ -1,4 +1,4 @@
-package src.main.java.com.espresso;
+package com.espresso;
 
 import java.io.InputStream;
 import java.io.Reader;

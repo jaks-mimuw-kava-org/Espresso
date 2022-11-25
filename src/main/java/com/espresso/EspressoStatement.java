@@ -1,4 +1,4 @@
-package src.main.java.com.espresso;
+package com.espresso;
 
 import java.io.IOException;
 import java.nio.file.Files;
