@@ -21,7 +21,6 @@ public class EspressoDriver implements Driver {
         catch (SQLException e) {
             throw new ExceptionInInitializerError(e);
         }
-
     }
     public EspressoDriver() {}
 
@@ -50,7 +49,7 @@ public class EspressoDriver implements Driver {
     @Override
     public boolean acceptsURL(String URL) throws SQLException {
         parseURL(URL);
-        return false;
+        return true;
     }
 
     @Override

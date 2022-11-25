@@ -14,7 +14,6 @@ public class EspressoStatement implements Statement {
     @Override
     public ResultSet executeQuery(String SQLQuery) throws SQLException {
         String fileName = getFileName(SQLQuery);
-        System.out.println();
         Path filePath = databasePath.resolve(fileName);
 
         if (!Files.exists(filePath))
