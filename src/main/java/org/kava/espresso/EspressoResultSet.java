@@ -1,4 +1,4 @@
-package com.espresso;
+package org.kava.espresso;
 
 import java.io.InputStream;
 import java.io.Reader;

@@ -1,4 +1,4 @@
-package com.espresso;
+package org.kava.espresso;
 
 import java.nio.file.Path;
 import java.sql.*;
