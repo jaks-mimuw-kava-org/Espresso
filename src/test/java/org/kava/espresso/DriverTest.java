@@ -9,11 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DriverTest {
     @Test
     public void checkSelect() {
-        Driver driver = new EspressoDriver();
+        String url = "jdbc:csv:src/main/resources/";
+        String query = "SELECT * FROM simple_database.csv;";
         try {
-            Connection con = driver.connect("jdbc:csv:src/main/resources/", null);
+            Connection con = DriverManager.getConnection(url);
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM simple_database.csv;");
+            ResultSet rs = stmt.executeQuery(query);
             rs.next();
             assertEquals(rs.getString(0), "A");
             assertEquals(rs.getString(1), "B");
