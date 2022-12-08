@@ -9,9 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DriverTest {
     @Test
     public void checkSelect() {
-        String url = "jdbc:csv:src/main/resources/";
+        String url = "jdbc:csv:src/test/resources/";
         String query = "SELECT * FROM simple_database.csv;";
         try {
+            Class.forName("org.kava.espresso.EspressoDriver");
             Connection con = DriverManager.getConnection(url);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -22,7 +23,7 @@ public class DriverTest {
             assertEquals(rs.getString(0), "C");
             assertEquals(rs.getString(1), "D");
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
