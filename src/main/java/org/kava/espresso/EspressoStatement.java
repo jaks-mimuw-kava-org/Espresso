@@ -4,37 +4,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
+import java.util.stream.Stream;
 
 public class EspressoStatement implements Statement {
-    private final Path databasePath;
-    public EspressoStatement(Path databasePath) {
-        this.databasePath = databasePath;
+    private final String csv_data;
+    public EspressoStatement(String csv_data) {
+        this.csv_data = csv_data;
     }
 
     @Override
     public ResultSet executeQuery(String SQLQuery) throws SQLException {
-        String fileName = getFileName(SQLQuery);
-        Path filePath = databasePath.resolve(fileName);
-
-        if (!Files.exists(filePath))
-            throw new SQLException("File does not exists");
-
         try {
-            return new EspressoResultSet(Files.lines(filePath));
-        } catch (IOException e) {
+            return new EspressoResultSet(Stream.of(csv_data.split("\n")));
+        } catch (Exception e) {
             throw new SQLException("File cannot be read.", e);
         }
-    }
-
-    private String getFileName(String sqlQuery) throws SQLException {
-        sqlQuery = sqlQuery.trim();
-        if (sqlQuery.isEmpty()) throw new SQLException("Empty SQL query.");
-
-        String[] parts = sqlQuery.split(" +");
-        String fileName = parts[parts.length - 1];
-        if (fileName.endsWith(";")) fileName = fileName.substring(0, fileName.length() - 1);
-
-        return fileName;
     }
 
     @Override

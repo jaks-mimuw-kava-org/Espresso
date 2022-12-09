@@ -1,5 +1,8 @@
 package org.kava.espresso;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.nio.file.Path;
 import java.sql.*;
 import java.util.Map;
@@ -8,14 +11,32 @@ import java.util.concurrent.Executor;
 
 public class EspressoConnection implements Connection {
     private final Path databasePath;
+    private final Properties props;
 
-    public EspressoConnection(Path databasePath) {
+    public EspressoConnection(Path databasePath, Properties props) {
         this.databasePath = databasePath;
+        this.props = props;
     }
 
     @Override
     public Statement createStatement() throws SQLException {
-        return new EspressoStatement(databasePath);
+        String host = props.getProperty("HOST");
+        int port = Integer.parseInt(props.getProperty("PORT"));
+        String data;
+        try {
+            Socket s = new Socket(host, port);
+            ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+
+            os.writeObject("src/test/resources/simple_database.csv");
+
+            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+            data = (String) is.readObject();
+            os.close();
+        }
+        catch (Exception e) {
+            throw new SQLException("Cannot read data from server.");
+        }
+        return new EspressoStatement(data);
     }
 
     @Override

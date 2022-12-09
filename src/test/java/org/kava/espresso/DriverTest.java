@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DriverTest {
     @Test
-    public void checkSelect() {
-        String url = "jdbc:csv:src/test/resources/";
-        String query = "SELECT * FROM simple_database.csv;";
+    public void checkConnection() {
+        String url = "jdbc:csv//localhost@7999/path=src/test/resources/simple_database.csv";
+        String query = "";
         try {
             Class.forName("org.kava.espresso.EspressoDriver");
             Connection con = DriverManager.getConnection(url);

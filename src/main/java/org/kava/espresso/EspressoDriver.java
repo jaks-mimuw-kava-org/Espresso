@@ -9,7 +9,8 @@ import java.util.logging.Logger;
 import java.util.regex.*;
 public class EspressoDriver implements Driver {
     private static final Driver registeredDriver;
-    private static final Pattern URL_PATTERN = Pattern.compile("^jdbc:csv:(.*)$");
+
+    private static final Pattern URL_PATTERN = Pattern.compile("^jdbc:csv//([a-z]+)@(\\d+)/path=(.*)$");
     private static final int MAJOR_VERSION = 1;
     private static final int MINOR_VERSION = 0;
 
@@ -31,7 +32,9 @@ public class EspressoDriver implements Driver {
         Matcher URLMatcher = URL_PATTERN.matcher(URL);
         if (URLMatcher.find()) {
             Properties props = new Properties();
-            props.setProperty("DB_PATH", URLMatcher.group(1));
+            props.setProperty("HOST", URLMatcher.group(1));
+            props.setProperty("PORT", URLMatcher.group(2));
+            props.setProperty("PATH", URLMatcher.group(3));
             return props;
         }
         throw new SQLException("URL is not valid.");
@@ -41,9 +44,9 @@ public class EspressoDriver implements Driver {
     @Override
     public Connection connect(String URL, Properties properties) throws SQLException {
         Properties URLProperties = parseURL(URL);
-        String databasePathString = URLProperties.getProperty("DB_PATH");
+        String databasePathString = URLProperties.getProperty("PATH");
         Path databasePath = Paths.get(databasePathString);
-        return new EspressoConnection(databasePath);
+        return new EspressoConnection(databasePath, URLProperties);
     }
 
     @Override
