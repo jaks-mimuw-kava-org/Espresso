@@ -1,24 +1,20 @@
 package org.kava.espresso;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.*;
-import java.util.stream.Stream;
 
 public class EspressoStatement implements Statement {
-    private final String csv_data;
-    public EspressoStatement(String csv_data) {
-        this.csv_data = csv_data;
+    private Connection connection;
+
+    private Integer id;
+    public EspressoStatement(Connection connection, Integer id) {
+        this.connection = connection;
+        this.id = id;
+        System.out.println(id);
     }
 
     @Override
     public ResultSet executeQuery(String SQLQuery) throws SQLException {
-        try {
-            return new EspressoResultSet(Stream.of(csv_data.split("\n")));
-        } catch (Exception e) {
-            throw new SQLException("File cannot be read.", e);
-        }
+        return null;
     }
 
     @Override

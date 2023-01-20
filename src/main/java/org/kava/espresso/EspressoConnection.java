@@ -1,42 +1,81 @@
 package org.kava.espresso;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.nio.file.Path;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class EspressoConnection implements Connection {
-    private final Path databasePath;
-    private final Properties props;
 
-    public EspressoConnection(Path databasePath, Properties props) {
-        this.databasePath = databasePath;
-        this.props = props;
+    private final static String hostname = "localhost";
+    private final static int port = 9876;
+
+    private final Properties properties;
+
+    private ObjectOutputStream outputStream;
+
+    private ObjectInputStream inputStream;
+
+    private final Socket socket;
+
+    private void initConnection() throws IOException {
+        this.outputStream = new ObjectOutputStream(this.socket.getOutputStream());
+        this.inputStream = new ObjectInputStream(this.socket.getInputStream());
+        outputStream.writeObject(this.properties);
+    }
+
+    private Object handleExecution(String object, String method, Integer id, boolean createNew,
+                          boolean sendBack) throws Exception {
+
+        outputStream.writeObject(object);
+        outputStream.writeObject(method);
+        outputStream.writeObject(id);
+        outputStream.writeObject(createNew);
+        outputStream.writeObject(sendBack);
+
+        if (createNew) {
+            Integer returnId = (Integer) inputStream.readObject();
+            switch (method) {
+                case "org.hsqldb.jdbc.JDBCStatement.executeQuery()":
+                    return new EspressoResultSet(this, returnId);
+                case "createStatement":
+                    return new EspressoStatement(this, returnId);
+            }
+        }
+        if (sendBack) {
+            return inputStream.readObject();
+        }
+        return null;
+    }
+
+
+    public EspressoConnection(Properties properties) throws SQLException {
+        this.properties = properties;
+        try {
+            this.socket = new Socket(hostname, port);
+            initConnection();
+        } catch (IOException e) {
+            throw new SQLException("Error in connecting to server.");
+        }
     }
 
     @Override
     public Statement createStatement() throws SQLException {
-        String host = props.getProperty("HOST");
-        int port = Integer.parseInt(props.getProperty("PORT"));
-        String data;
         try {
-            Socket s = new Socket(host, port);
-            ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
-
-            os.writeObject("src/test/resources/simple_database.csv");
-
-            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
-            data = (String) is.readObject();
-            os.close();
+            return (Statement) handleExecution(
+                    "org.hsqldb.jdbc.JDBCConnection",
+                    "createStatement",
+                    0,
+                    true,
+                    false
+            );
+        } catch (Exception e) {
+            throw new SQLException("Something didn't work.");
         }
-        catch (Exception e) {
-            throw new SQLException("Cannot read data from server.");
-        }
-        return new EspressoStatement(data);
     }
 
     @Override

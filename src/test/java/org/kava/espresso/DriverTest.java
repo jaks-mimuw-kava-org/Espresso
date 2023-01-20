@@ -4,26 +4,26 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class DriverTest {
-    @Test
-    public void checkConnection() {
-        String url = "jdbc:csv//localhost@7999/path=src/test/resources/simple_database.csv";
-        String query = "";
-        try {
-            Class.forName("org.kava.espresso.EspressoDriver");
-            Connection con = DriverManager.getConnection(url);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            rs.next();
-            assertEquals(rs.getString(0), "A");
-            assertEquals(rs.getString(1), "B");
-            rs.next();
-            assertEquals(rs.getString(0), "C");
-            assertEquals(rs.getString(1), "D");
 
+    private final String connectionURL = "jdbc:espresso//SA:@localhost:9001/xdb";
+
+    @Test
+    public void connectionTest() {
+        try {
+            Connection connection = DriverManager.getConnection(connectionURL, null);
+            Statement statement = connection.createStatement();
         } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void executeQueryTest() {
+        try {
+            DriverManager.getConnection(connectionURL);
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

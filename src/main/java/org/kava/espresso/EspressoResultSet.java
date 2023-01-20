@@ -12,25 +12,19 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class EspressoResultSet implements ResultSet {
-    private static final String FIELD_SEPARATOR = ";";
-    private final Iterator<String> iterator;
-    private List<String> record;
+    private Connection connection;
 
-    public EspressoResultSet(Stream<String> s) {
-        this.iterator = s.iterator();
-        this.record = null;
+    private final Integer id;
+
+
+    public EspressoResultSet(Connection connection, Integer id) {
+        this.connection = connection;
+        this.id = id;
     }
 
     @Override
     public boolean next() throws SQLException {
-        boolean hasNext = iterator.hasNext();
-        record = null;
-
-        if (iterator.hasNext()) {
-            record = List.of(iterator.next().split(FIELD_SEPARATOR));
-        }
-
-        return hasNext;
+        return false;
     }
 
     @Override
@@ -45,7 +39,7 @@ public class EspressoResultSet implements ResultSet {
 
     @Override
     public String getString(int i) throws SQLException {
-        return record.get(i);
+        return null;
     }
 
     @Override
